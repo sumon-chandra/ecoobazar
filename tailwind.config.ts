@@ -36,9 +36,8 @@ module.exports = {
         warning: {
           DEFAULT: "hsl(var(--warning))",
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+        "title-hard": {
+          DEFAULT: "hsl(var(--title-hard))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
