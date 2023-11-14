@@ -18,8 +18,11 @@ const Navbar = () => {
 
 	return (
 		<div className="border-b border-primary w-full px-2 py-3 bg-white ">
-			<nav className="max-w-7xl flex items-center justify-between">
-				<div className="flex items-center justify-start gap-2">
+			<nav className="max-w-7xl mx-auto flex items-center justify-between">
+				<Link
+					href="/"
+					className="flex items-center justify-start gap-2 cursor-pointer select-none"
+				>
 					<figure>
 						<Image
 							width="30"
@@ -29,7 +32,7 @@ const Navbar = () => {
 						/>
 					</figure>
 					<div className="font-bold text-title-hard text-2xl">Ecoobazar</div>
-				</div>
+				</Link>
 				<div className="flex items-center gap-2 justify-center">
 					{navRoutes.map(route => (
 						<NavItem

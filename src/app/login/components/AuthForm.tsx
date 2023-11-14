@@ -48,7 +48,6 @@ const AuthForm = () => {
 			axios.post("/api/register", values)
 				.then(() => {
 					toast({
-						variant: "default",
 						description: "Registration successful",
 					});
 					form.reset();
@@ -56,7 +55,7 @@ const AuthForm = () => {
 				.catch(err => {
 					setIsLoading(false);
 					toast({
-						variant: "destructive",
+						variant: "danger",
 						description: err?.response?.data,
 					});
 				})
@@ -71,14 +70,13 @@ const AuthForm = () => {
 				.then(result => {
 					if (result?.error) {
 						toast({
-							variant: "destructive",
+							variant: "danger",
 							description: "Failed to login!",
 						});
 					}
 					if (result?.ok) {
 						form.reset();
 						toast({
-							variant: "default",
 							description: "Login successful!",
 						});
 						router.push("/");
@@ -86,7 +84,7 @@ const AuthForm = () => {
 				})
 				.catch(() => {
 					toast({
-						variant: "destructive",
+						variant: "danger",
 						description: "Failed to login!",
 					});
 				})
