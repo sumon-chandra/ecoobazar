@@ -40,7 +40,7 @@ const AuthForm = () => {
 		}
 	}, [variant]);
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setIsLoading(true);
 
 		if (variant === "REGISTER") {
@@ -63,7 +63,14 @@ const AuthForm = () => {
 		}
 
 		if (variant === "LOGIN") {
-			console.log(values);
+			const response = await signIn("credentials", { redirect: false, ...values });
+			if (!response?.ok || response.error) {
+				toast.error(response?.error);
+				setIsLoading(false);
+			} else {
+				toast.success("Login successful!!");
+				form.reset();
+			}
 		}
 	}
 
