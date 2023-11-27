@@ -7,10 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/src/compone
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import axios from "axios";
-import { useToast } from "@/src/components/ui/use-toast";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Card } from "@prisma/client";
+import { toast } from "sonner";
 
 const formSchema = z.object({
 	name: z.string(),
@@ -21,7 +20,6 @@ const formSchema = z.object({
 });
 
 const AuthForm = () => {
-	const { toast } = useToast();
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [variant, setVariant] = useState<"LOGIN" | "REGISTER">("LOGIN");
@@ -45,59 +43,27 @@ const AuthForm = () => {
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		setIsLoading(true);
 
-		// if (variant === "REGISTER") {
-		// 	axios.post("/api/register", values)
-		// 		.then(response => {
-		// 			toast({
-		// 				variant: "danger",
-		// 				description: "Something went wrong!!",
-		// 			});
+		if (variant === "REGISTER") {
+			axios.post("/api/register", values)
+				.then(response => {
+					if (response.statusText === "OK") {
+						toast.success("Register successfully");
+					} else {
+						toast.error("Something went wrong!!");
+					}
+					form.reset();
+				})
+				.catch(err => {
+					console.log(err.massage);
+					toast.error("Registrations failed");
+					setIsLoading(false);
+				})
+				.finally(() => setIsLoading(false));
+		}
 
-		// 			toast({
-		// 				description: "Registration successful",
-		// 			});
-		// 			form.reset();
-		// 		})
-		// 		.catch(err => {
-		// 			console.log(err.massage);
-
-		// 			setIsLoading(false);
-		// 			toast({
-		// 				variant: "danger",
-		// 				description: "Something went wrong!!",
-		// 			});
-		// 		})
-		// 		.finally(() => setIsLoading(false));
-		// }
-
-		// if (variant === "LOGIN") {
-		// 	signIn("credentials", {
-		// 		...values,
-		// 		redirect: false,
-		// 	})
-		// 		.then(result => {
-		// 			if (result?.error) {
-		// 				toast({
-		// 					variant: "danger",
-		// 					description: "Failed to login!",
-		// 				});
-		// 			}
-		// 			if (result?.ok) {
-		// 				form.reset();
-		// 				toast({
-		// 					description: "Login successful!",
-		// 				});
-		// 				router.push("/");
-		// 			}
-		// 		})
-		// 		.catch(() => {
-		// 			toast({
-		// 				variant: "danger",
-		// 				description: "Failed to login!",
-		// 			});
-		// 		})
-		// 		.finally(() => setIsLoading(false));
-		// }
+		if (variant === "LOGIN") {
+			console.log(values);
+		}
 	}
 
 	return (
