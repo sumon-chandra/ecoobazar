@@ -5,7 +5,7 @@ import prisma from "@/src/lib/prismadb"
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, email, password } = body;
+        const { name, email, password, role } = body;
 
         if (!name || !email || !password) {
             return new NextResponse("Invalid credentials!!", { status: 400 })
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
         const user = await prisma?.user.create({
             data: {
-                name, email, hashedPassword
+                name, email, hashedPassword, role
             }
         })
 

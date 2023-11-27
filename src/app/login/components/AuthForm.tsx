@@ -44,7 +44,8 @@ const AuthForm = () => {
 		setIsLoading(true);
 
 		if (variant === "REGISTER") {
-			axios.post("/api/register", values)
+			const user = { ...values, role: "USER" };
+			axios.post("/api/register", user)
 				.then(response => {
 					if (response.statusText === "OK") {
 						toast.success("Register successfully");
