@@ -10,6 +10,8 @@ import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { FcGoogle } from "react-icons/fc";
+import { cn } from "@/src/lib/utils";
 
 const formSchema = z.object({
 	name: z.string(),
@@ -74,6 +76,18 @@ const AuthForm = () => {
 		}
 	}
 
+	async function handleSocialLogin() {
+		setIsLoading(true);
+		const response = await signIn("google", { redirect: false });
+		if (!response?.ok || response?.error) {
+			setIsLoading(false);
+			toast.error(response?.error);
+		} else {
+			setIsLoading(false);
+			toast.success("Login successful!!");
+		}
+	}
+
 	return (
 		<div className="bg-white px-6 py-10 w-full sm:w-96 rounded-lg shadow-primary shadow">
 			<h3 className="text-center text-xl font-bold leading-6">{variant === "REGISTER" ? "Register" : "Login"}</h3>
@@ -117,14 +131,37 @@ const AuthForm = () => {
 							</FormItem>
 						)}
 					/>
-					<Button disabled={isLoading} variant="primary" type="submit" className="text-white font-semibold">
+					<Button
+						disabled={isLoading}
+						variant="primary"
+						type="submit"
+						className="text-white font-semibold active:scale-95 transition-all"
+					>
 						{variant === "REGISTER" ? "Register" : "Login"}
 					</Button>
 				</form>
 				<div className="text-sm mt-2 flex items-center justify-center gap-2">
 					<div>{variant === "LOGIN" ? "Don't have an account?" : "Already have an account?"}</div>
-					<div className="underline underline-offset-2 font-semibold text-primary cursor-pointer" onClick={toggleVariant}>
+					<div
+						className="underline underline-offset-2 font-semibold text-primary cursor-pointer"
+						onClick={toggleVariant}
+					>
 						{variant === "LOGIN" ? "Register" : "Login"}
+					</div>
+				</div>
+				<div
+					onClick={handleSocialLogin}
+					className={cn(
+						"bg-green-100 border-2 border-primary py-2 flex items-center justify-center rounded-md cursor-pointer active:scale-95 transition-all",
+						isLoading && "opacity-60 pointer-events-none cursor-not-allowed"
+					)}
+				>
+					<div className="flex items-center justify-center gap-4">
+						{isLoading && <div className="animate-spin h-4 w-4" />}
+						<div>
+							<FcGoogle size={20} />
+						</div>
+						<div>Continue with Google</div>
 					</div>
 				</div>
 			</Form>
