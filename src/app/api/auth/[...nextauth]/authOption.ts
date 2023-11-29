@@ -1,17 +1,13 @@
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google"
 import bcrypt from "bcrypt"
-import prisma from "./prismadb";
+import prisma from "../../../../lib/prismadb";
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma!),
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-        }),
         CredentialsProvider({
             name: "credentials",
             credentials: {
@@ -39,11 +35,27 @@ export const authOptions: NextAuthOptions = {
                     throw new Error("Incorrect password")
                 }
 
+                const testUser = {}
+
                 return user
             }
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
         })
     ],
-    debug: process.env.NODE_ENV !== "development",
+    callbacks: {
+        jwt({ token, user }) {
+            if (user) token.role = user.role
+            return token
+        },
+        session({ session, token }) {
+            session.user.role = token.role
+            return session
+        }
+    },
+    debug: process.env.NODE_ENV === 'development',
     session: {
         strategy: "jwt"
     },

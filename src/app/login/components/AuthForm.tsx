@@ -79,9 +79,9 @@ const AuthForm = () => {
 	async function handleSocialLogin() {
 		setIsLoading(true);
 		const response = await signIn("google", { redirect: false });
-		if (!response?.ok || response?.error) {
+		console.log(response);
+		if (!response?.ok && (response?.error !== "" || undefined)) {
 			setIsLoading(false);
-			toast.error(response?.error);
 		} else {
 			setIsLoading(false);
 			toast.success("Login successful!!");
