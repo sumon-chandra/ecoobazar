@@ -89,7 +89,7 @@ const AuthForm = () => {
 	}
 
 	return (
-		<div className="bg-white px-6 py-10 w-full sm:w-96 rounded-lg shadow-primary shadow">
+		<div className="bg-white px-6 py-10 w-full sm:w-96 rounded-lg shadow-primary shadow z-10">
 			<h3 className="text-center text-xl font-bold leading-6">{variant === "REGISTER" ? "Register" : "Login"}</h3>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
