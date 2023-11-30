@@ -1,41 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { navRoutes } from "../../primitives";
-import NavItem from "./NavItem";
-import { Button } from "@/src/components/ui/button";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import SearchInput from "./SearchInput";
+import Dropdown from "./Dropdown";
 
 const Navbar = () => {
-	const { data } = useSession();
-	const router = useRouter();
-	const handleLogout = () => {
-		signOut({ redirect: false });
-		router.push("/login");
-	};
+
 
 	return (
 		<div className="border-b w-screen relative border-primary w-full px-2 py-3 bg-white z-[999]">
 			<div className="lg:w-full-width mx-auto">
 				<nav className="flex items-center justify-between">
-					<Link href="/" className="flex items-center justify-start gap-2 cursor-pointer select-none">
-						<figure>
-							<Image width="30" height="30" alt="Logo image" src="/logo.png" />
-						</figure>
-						<div className="font-bold text-title-hard text-2xl">Ecoobazar</div>
-					</Link>
-					<div>
-						{data?.user?.email ? (
-							<Button onClick={handleLogout} variant="primary">
-								Logout
-							</Button>
-						) : (
-							<Link href="/login">
-								<Button variant="primary">Login</Button>
-							</Link>
-						)}
+					<div className="flex-1">
+						<Link href="/" className="cursor-pointer flex items-center justify-start gap-2 select-none">
+							<figure>
+								<Image width="10" height="10" alt="Logo image" src="/logo.png" className="lg:w-[30px]" />
+							</figure>
+							<div className="font-bold text-title-hard text-sm lg:text-2xl">Ecoobazar</div>
+						</Link>
+					</div>
+					<div className="flex flex-1 items-center lg:justify-between justify-end gap-3">
+						<SearchInput />
+						<Dropdown />
 					</div>
 				</nav>
 			</div>
