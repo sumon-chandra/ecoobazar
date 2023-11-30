@@ -15,6 +15,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    width: {
+      "full-width": "1320px"
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

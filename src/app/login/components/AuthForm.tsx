@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FcGoogle } from "react-icons/fc";
 import { cn } from "@/src/lib/utils";
+import Spinner from "../../components/loaders/Spinner";
 
 const formSchema = z.object({
 	name: z.string(),
@@ -85,11 +86,12 @@ const AuthForm = () => {
 		} else {
 			setIsLoading(false);
 			toast.success("Login successful!!");
+			router.push("/");
 		}
 	}
 
 	return (
-		<div className="bg-white px-6 py-10 w-full sm:w-96 rounded-lg shadow-primary shadow z-10">
+		<div className="bg-white px-6 py-10 flex-1 md:flex-none lg:w-[400px] rounded-lg shadow-primary shadow z-10">
 			<h3 className="text-center text-xl font-bold leading-6">{variant === "REGISTER" ? "Register" : "Login"}</h3>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
@@ -152,12 +154,12 @@ const AuthForm = () => {
 				<div
 					onClick={handleSocialLogin}
 					className={cn(
-						"bg-green-100 border-2 border-primary py-2 flex items-center justify-center rounded-md cursor-pointer active:scale-95 transition-all",
+						"bg-green-100 mt-6 border-2 border-primary py-2 flex items-center justify-center rounded-md cursor-pointer active:scale-95 transition-all",
 						isLoading && "opacity-60 pointer-events-none cursor-not-allowed"
 					)}
 				>
 					<div className="flex items-center justify-center gap-4">
-						{isLoading && <div className="animate-spin h-4 w-4" />}
+						{isLoading && <Spinner />}
 						<div>
 							<FcGoogle size={20} />
 						</div>
